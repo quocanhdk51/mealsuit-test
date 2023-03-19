@@ -1,0 +1,6 @@
+<ng-container *ngIf="completed != null">
+    <span class="status" [class.completed]="completed">
+        <ng-container *ngIf="completed; else notCompleted">Completed</ng-container>
+        <ng-template #notCompleted>Not Completed</ng-template>
+    </span>
+</ng-container>

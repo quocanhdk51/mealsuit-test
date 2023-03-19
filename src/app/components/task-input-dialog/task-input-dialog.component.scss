@@ -1,0 +1,10 @@
+form {
+    display: flex;
+    flex-direction: column;
+
+    & > section.button-group {
+        margin-top: .5rem;
+        display: flex;
+        justify-content: flex-end;
+    }
+}

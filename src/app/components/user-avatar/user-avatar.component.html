@@ -1,0 +1,15 @@
+<ng-container *ngIf="userName; else displayWithUserId">
+    <span>{{ userName | nameAbbreviate | uppercase }}</span>
+</ng-container>
+<ng-template #displayWithUserId>
+    <ng-container *ngIf="userId; else na">
+        <ng-container *ngIf="userId  | fetchUserNameById | async as fetchedUserName; else fetching">
+            <span class="avatar" [matTooltipDisabled]="showingFullName" [matTooltip]="fetchedUserName">{{ fetchedUserName | nameAbbreviate | uppercase }}</span>
+            <span class="name-display" *ngIf="showingFullName">{{ fetchedUserName }}</span>
+        </ng-container>
+        <ng-template #fetching>
+            <mat-spinner diameter="25"></mat-spinner>
+        </ng-template>
+    </ng-container>
+    <ng-template #na>N/A</ng-template>
+</ng-template>

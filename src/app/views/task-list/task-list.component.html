@@ -1,0 +1,8 @@
+<header>
+    <h2>Task Lists</h2>
+    <button mat-flat-button color="primary" (click)="onNewTask()">
+        + New Task
+    </button>
+</header>
+<app-task-list-filter (onFilter)="onFilterTask($event)"></app-task-list-filter>
+<app-task-list-item *ngFor="let task of tasks$ | async" [task]="task"></app-task-list-item>

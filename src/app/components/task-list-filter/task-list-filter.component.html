@@ -1,0 +1,22 @@
+<form [formGroup]="form">
+    <label>Search: </label>
+    <mat-form-field appearance="fill">
+        <mat-label>Title</mat-label>
+        <input matInput formControlName="title">
+    </mat-form-field>
+    <mat-form-field appearance="fill">
+        <mat-label>Assignee</mat-label>
+        <mat-select formControlName="assigneeId">
+            <mat-option [value]="null">All</mat-option>
+            <mat-option *ngFor="let user of users$ | async" [value]="user.id">{{ user.name }}</mat-option>
+        </mat-select>
+    </mat-form-field>
+    <mat-form-field appearance="fill">
+        <mat-label>Status</mat-label>
+        <mat-select formControlName="completed">
+            <mat-option [value]="null">All</mat-option>
+            <mat-option [value]="true">Completed</mat-option>
+            <mat-option [value]="false">Not Completed</mat-option>
+        </mat-select>
+    </mat-form-field>
+</form>

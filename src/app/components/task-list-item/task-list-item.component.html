@@ -1,0 +1,15 @@
+<ng-container *ngIf="task">
+    <a class="item-row" [routerLink]="'/task-details/' + task.id">
+        <span class="label">Task: </span>
+        <span class="title">{{ task.title }}</span>
+        <app-task-status [completed]="task.completed"></app-task-status>
+        <app-user-avatar [userId]="task.assigneeId"></app-user-avatar>
+        <button mat-icon-button preventClickFallback [matMenuTriggerFor]="taskActions">
+            <mat-icon class="mat-18">more_vert</mat-icon>
+        </button>
+        <mat-menu #taskActions="matMenu">
+            <button mat-menu-item (click)="onUpdateTask()">Edit</button>
+            <button mat-menu-item [disabled]="task.completed" (click)="onCompleteTask()">Complete</button>
+        </mat-menu>
+    </a>
+</ng-container>

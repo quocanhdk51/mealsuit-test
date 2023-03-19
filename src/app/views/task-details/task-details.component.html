@@ -1,0 +1,22 @@
+<a routerLink="/tasks"><- Go back to task list</a>
+<ng-container *ngIf="task$ | async as task">
+    <button *ngIf="task.id > -1" class="action-btn" mat-fab color="primary" [matMenuTriggerFor]="taskActions">
+        <mat-icon class="mat-18">more_vert</mat-icon>
+    </button>
+    <mat-menu #taskActions="matMenu">
+        <button mat-menu-item data-testid="update-btn" (click)="updateTask()">Edit</button>
+        <button mat-menu-item data-testid="complete-btn" [disabled]="task.completed" (click)="completeTask()">Complete</button>
+    </mat-menu>
+    <h1>{{ task.title }}</h1>
+    <section class="sub-header">
+        <div class="user-section">
+            <label>Assignee: </label>
+            <app-user-avatar [userId]="task.assigneeId" [showingFullName]="true"></app-user-avatar>
+        </div>
+        <app-task-status [completed]="task.completed"></app-task-status>
+    </section>
+    <section class="description">
+        <h4>Description:</h4>
+        <p>{{ task.description }}</p>
+    </section>
+</ng-container>

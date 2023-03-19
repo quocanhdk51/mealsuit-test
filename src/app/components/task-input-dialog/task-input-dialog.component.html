@@ -1,0 +1,40 @@
+<h2 [ngSwitch]="mode">
+    <ng-container *ngSwitchCase="DIALOG_MODE.CREATE">Create New Task</ng-container>
+    <ng-container *ngSwitchCase="DIALOG_MODE.UPDATE">Update Task</ng-container>
+</h2>
+<form [formGroup]="form" (ngSubmit)="submit()">
+    <mat-form-field appearance="fill">
+        <mat-label>Title</mat-label>
+        <input matInput formControlName="title" required>
+        <mat-error *ngIf="formControls.title.hasError('required')">
+            Title is required
+        </mat-error>
+        <mat-error *ngIf="formControls.title.hasError('minlength')">
+            Title should be more than 8 characters
+        </mat-error>
+    </mat-form-field>
+    <mat-form-field appearance="fill">
+        <mat-label>Description</mat-label>
+        <textarea
+            matInput
+            formControlName="description"
+            required
+            cdkTextareaAutosize
+            cdkAutosizeMinRows="5"
+            cdkAutosizeMaxRows="10"
+        ></textarea>
+        <mat-error *ngIf="formControls.description.hasError('required')">
+            Description is required
+        </mat-error>
+    </mat-form-field>
+    <mat-form-field appearance="fill">
+        <mat-label>Assignees</mat-label>
+        <mat-select formControlName="assigneeId">
+            <mat-option *ngFor="let user of users$ | async" [value]="user.id">{{ user.name }}</mat-option>
+        </mat-select>
+    </mat-form-field>
+    <section class="button-group">
+        <button mat-button type="button" color="primary" mat-dialog-close>Cancel</button>
+        <button mat-flat-button type="submit" color="primary" [disabled]="!(formSubmittable$ | async)">Submit</button>
+    </section>
+</form>
