@@ -1,5 +1,4 @@
-import { USER_SERVICE_TOKEN } from '@tokens/user.token';
-import { Observable, combineLatest, of } from 'rxjs';
+import { Observable, combineLatest } from 'rxjs';
 import { TaskDialogData, Task, TaskForm } from '@models/task.model';
 import { TaskServiceInterface } from '@interfaces/task-service.interface';
 import { TASK_SERVICE_TOKEN } from '@tokens/task.token';
@@ -7,12 +6,12 @@ import { Component, Inject, ChangeDetectionStrategy } from '@angular/core';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { AbstractControl, FormControl, FormGroup, Validators } from '@angular/forms';
 import { User } from '@models/user.model';
-import { startWith, tap, map, switchMap, catchError } from 'rxjs/operators';
+import { startWith, tap, map, switchMap } from 'rxjs/operators';
 import { DialogMode } from '@models/dialog.model';
 import { ObservableHandlerService } from '@services/observable-handler.service';
 import { NotificationService } from '@services/notification/notification.service';
 import { trimTaskFormValue } from '@utils/task.util';
-import { UserServiceInterface } from '@interfaces/user-service.interface';
+import { UsersStore } from '@component-stores/users.store';
 
 @Component({
   selector: 'app-task-input-dialog',
@@ -36,12 +35,7 @@ export class TaskInputDialogComponent {
     assigneeId: new FormControl(this._taskInitialFormState.assigneeId || null)
   });
 
-  public readonly users$: Observable<User[]> = this._userService.findAllUsers().pipe(
-    catchError((error: Error) => {
-      this._notificationService.displayMessage(error.message);
-      return of([]);
-    })
-  );
+  public readonly users$: Observable<User[]> = this._usersStore.users$;
 
   private readonly _valueChanged$: Observable<boolean> = this.form.valueChanges.pipe(
     map((value) => {
@@ -68,8 +62,8 @@ export class TaskInputDialogComponent {
 
   constructor(
     @Inject(TASK_SERVICE_TOKEN) private readonly _taskService: TaskServiceInterface,
-    @Inject(USER_SERVICE_TOKEN) private readonly _userService: UserServiceInterface,
     @Inject(MAT_DIALOG_DATA) private readonly _dialogData: TaskDialogData,
+    private readonly _usersStore: UsersStore,
     private readonly _dialogRef: MatDialogRef<TaskInputDialogComponent>,
     private readonly _observableHandler: ObservableHandlerService,
     private readonly _notificationService: NotificationService,

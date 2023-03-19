@@ -12,6 +12,7 @@ import { of } from "rxjs";
 import { TaskDetailsStore, UN_FOUND_TASK_PLACE_HOLDER } from "./task-details.store";
 import { Task } from "@models/task.model";
 import { NotificationService } from "@services/notification/notification.service";
+import { UsersStore } from "./users.store";
 
 const createSpyObj = jasmine.createSpyObj;
 
@@ -43,6 +44,7 @@ describe('TaskDetailsStore', () => {
                 NoopAnimationsModule
             ],
             providers: [
+                UsersStore,
                 {
                     provide: ActivatedRoute,
                     useValue: {

@@ -25,6 +25,7 @@ import { TestbedHarnessEnvironment } from '@angular/cdk/testing/testbed';
 import { MatMenuHarness } from '@angular/material/menu/testing';
 import { UN_FOUND_TASK_PLACE_HOLDER } from '@component-stores/task-details.store';
 import { NotificationService } from '@services/notification/notification.service';
+import { UsersStore } from '@component-stores/users.store';
 
 const createSpyObj = jasmine.createSpyObj;
 
@@ -91,6 +92,7 @@ describe('TaskDetailsComponent', () => {
         NoopAnimationsModule
       ],
       providers: [
+        UsersStore,
         {
           provide: ActivatedRoute,
           useValue: {

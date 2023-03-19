@@ -1,13 +1,11 @@
-import { catchError, distinctUntilChanged, debounceTime, takeUntil } from 'rxjs/operators';
-import { Observable, of, Subject } from 'rxjs';
+import { distinctUntilChanged, debounceTime, takeUntil } from 'rxjs/operators';
+import { Observable, Subject } from 'rxjs';
 import { FormControl, FormGroup } from '@angular/forms';
-import { Component, ChangeDetectionStrategy, Output, EventEmitter, OnInit, OnDestroy, Inject } from '@angular/core';
+import { Component, ChangeDetectionStrategy, Output, EventEmitter, OnInit, OnDestroy } from '@angular/core';
 import { TaskFilter } from '@models/task.model';
 import { INITIAL_TASK_LIST_STATE } from '@component-stores/task-list.store';
 import { User } from '@models/user.model';
-import { NotificationService } from '@services/notification/notification.service';
-import { USER_SERVICE_TOKEN } from '@tokens/user.token';
-import { UserServiceInterface } from '@interfaces/user-service.interface';
+import { UsersStore } from '@component-stores/users.store';
 
 const INITIAL_FILTER: TaskFilter = INITIAL_TASK_LIST_STATE.filter;
 
@@ -20,12 +18,7 @@ const INITIAL_FILTER: TaskFilter = INITIAL_TASK_LIST_STATE.filter;
 export class TaskListFilterComponent implements OnInit, OnDestroy {
   @Output() onFilter: EventEmitter<TaskFilter> = new EventEmitter();
 
-  public readonly users$: Observable<User[]> = this._userService.findAllUsers().pipe(
-    catchError((error: Error) => {
-      this._notificationService.displayMessage(error.message);
-      return of([]);
-    })
-  );
+  public readonly users$: Observable<User[]> = this._userStore.users$;
 
   public readonly form: FormGroup = new FormGroup({
     title: new FormControl(INITIAL_FILTER.title),
@@ -36,8 +29,7 @@ export class TaskListFilterComponent implements OnInit, OnDestroy {
   private _destroy$: Subject<void> = new Subject();
 
   constructor(
-    @Inject(USER_SERVICE_TOKEN) private readonly _userService: UserServiceInterface,
-    private readonly _notificationService: NotificationService,
+    private readonly _userStore: UsersStore,
   ) { }
 
   ngOnInit(): void {

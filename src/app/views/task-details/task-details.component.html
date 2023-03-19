@@ -1,4 +1,4 @@
-<a routerLink="/tasks"><- Go back to task list</a>
+<a routerLink="/tasks">Task list</a>
 <ng-container *ngIf="task$ | async as task">
     <button *ngIf="task.id > -1" class="action-btn" mat-fab color="primary" [matMenuTriggerFor]="taskActions">
         <mat-icon class="mat-18">more_vert</mat-icon>

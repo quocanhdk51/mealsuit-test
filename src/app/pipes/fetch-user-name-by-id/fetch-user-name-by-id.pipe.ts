@@ -1,9 +1,8 @@
 import { map, catchError } from 'rxjs/operators';
 import { Observable, of } from 'rxjs';
-import { Inject, Pipe, PipeTransform } from '@angular/core';
+import { Pipe, PipeTransform } from '@angular/core';
 import { NotificationService } from '@services/notification/notification.service';
-import { UserServiceInterface } from '@interfaces/user-service.interface';
-import { USER_SERVICE_TOKEN } from '@tokens/user.token';
+import { UsersStore } from '@component-stores/users.store';
 
 @Pipe({
   name: 'fetchUserNameById'
@@ -11,12 +10,12 @@ import { USER_SERVICE_TOKEN } from '@tokens/user.token';
 export class FetchUserNameByIdPipe implements PipeTransform {
 
   constructor(
-    @Inject(USER_SERVICE_TOKEN) private readonly _userService: UserServiceInterface,
+    private readonly _usersStore: UsersStore,
     private readonly _notificationService: NotificationService,
   ) {}
 
   transform(id: number): Observable<string> {
-    return this._userService.findUserById(id).pipe(
+    return this._usersStore.getUser(id).pipe(
       map(user => user.name),
       catchError((error: Error) => {
         this._notificationService.displayMessage(error.message);

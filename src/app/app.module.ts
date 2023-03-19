@@ -11,6 +11,7 @@ import { UserService } from '@services/user.service';
 import { NotificationModule } from '@services/notification/notification.module';
 import { ObservableHandlerService } from '@services/observable-handler.service';
 import { USER_SERVICE_TOKEN } from '@tokens/user.token';
+import { UsersStore } from '@component-stores/users.store';
 
 @NgModule({
   declarations: [
@@ -38,7 +39,8 @@ import { USER_SERVICE_TOKEN } from '@tokens/user.token';
     {
       provide: USER_SERVICE_TOKEN,
       useClass: UserService
-    }
+    },
+    UsersStore
   ],
   bootstrap: [AppComponent]
 })
